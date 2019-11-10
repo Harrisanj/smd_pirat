@@ -19,14 +19,16 @@
     <allow-intent href="https:///*" />
 
 
-<plugin name="phonegap-nfc"  />
 
 
 
 
 
 
-
+<access origin=""/>
+    <plugin name="cordova-plugin-whitelist" version="1" />
+    <allow-intent href="http:///" />
+    <allow-intent href="https:///*" />
 
 
 <!--  -->
