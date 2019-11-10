@@ -35,7 +35,11 @@ var app = new Framework7({
 	  {
 		path: '/add_person',
 		url: 'pages/add_person.html',
-	  },
+		},
+		{
+			path: '/history_details',
+			url: 'pages/history_details.html',
+		},
 	],
 	// ... other parameters
   });
