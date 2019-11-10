@@ -18,7 +18,7 @@
 							<div class="item-inner">
 								<div class="item-title item-floating-label">Логин</div>
 								<div class="item-input-wrap">
-									<input type="text" placeholder="Ваш Логин">
+									<input id='input-login' type="text" placeholder="Ваш Логин">
 									<span class="input-clear-button"></span>
 								</div>
 							</div>
@@ -27,14 +27,17 @@
 							<div class="item-inner">
 								<div class="item-title item-floating-label">Пароль</div>
 								<div class="item-input-wrap">
-									<input type="password" placeholder="Ваш Пароль">
+									<input id='input-password' type="password" placeholder="Ваш Пароль">
 									<span class="input-clear-button"></span>
 								</div>
 							</div>
 						</li>
 					</ul> </div>			 
-				<a href="/history" class="button button-raised button-round button-fill button-large">Войти</a>
+				<a id='login' class="button button-raised button-round button-fill button-large">Войти</a>
+<div style="color:red;" id="login_errors">
 
+
+</div>
 
 
 
