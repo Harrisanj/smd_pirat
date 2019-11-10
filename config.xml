@@ -8,7 +8,11 @@
 <!-- versionCode is optional and Android only -->
 <icon src="icon-60@3x.png" width="180" height="180" />
   <name>Досуг пенсионеров</name>
-
+<!--  добавил на всякий-->
+<allow-intent href="http://*/*" />
+    <allow-intent href="https://*/*" />
+<access origin="*"/>
+<!--  -->
   <description>
      Хорошее приложение
   </description>
