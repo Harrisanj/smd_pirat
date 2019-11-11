@@ -272,3 +272,11 @@ $$(document).on('click', '#add_person_button', function(){
 	}
 });
 
+
+document.addEventListener("deviceready", device_init, false);
+function device_init(){
+    document.addEventListener("backbutton", function(){
+    	navigator.app.backHistory()
+  }, true);
+
+}
