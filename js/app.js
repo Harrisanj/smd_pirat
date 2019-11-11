@@ -69,7 +69,54 @@ var app = new Framework7({
 				for (a in locations){
 					$$('#select_address').append('<option value="'+locations[a].id+'" selected>'+locations[a].address+'</option>');
 				}
-				console.log(distributors);
+				/* --- */
+				var activities = activities_data.filter(function(val){
+					return val.location.id== $$('#select_address').val();
+				});
+				for (a in activities){
+					$$('#select_activity').append('<option value="'+activities[a].id+'" selected>'+activities[a].title+'</option>');
+				}
+				/* ---- */
+				$$('#select_address').change(function (){
+					var activities = activities_data.filter(function(val){
+						return val.location.id== $$('#select_address').val();
+					});
+					$$('#select_activity').html('');
+					for (a in activities){
+						$$('#select_activity').append('<option value="'+activities[a].id+'" selected>'+activities[a].title+'</option>');
+					}
+					var smart_select=app.smartSelect.get('#smart_select_activity');
+						
+				});
+				$$('#select_activity').change(function (){
+					var activity = activities_data.find(function(val){
+						return val.id==$$('#select_activity').val();
+					});
+					var start_date = new Date (activity.start);
+					var end_date = new Date (activity.end);
+					var start_date_text = start_date.getDate()+'.'+(start_date.getMonth()+1)+'.'+start_date.getFullYear();
+					var start_time_minutes = start_date.getMinutes()<10?'0'+start_date.getMinutes():start_date.getMinutes(); 
+					var start_time_text = start_date.getHours()+':'+start_time_minutes;
+					var end_time_minutes = end_date.getMinutes()<10?'0'+end_date.getMinutes():end_date.getMinutes();
+					var end_time_text = end_date.getHours()+':'+end_time_minutes;
+					$$('#activity_date').html('Дата '+start_date_text+' '+start_time_text+' - '+ end_time_text);
+/* ------- */
+					console.log(activity, activities_data);
+				});
+
+			/* --------------- */
+				var activity = activities_data.find(function(val){
+					return val.id==$$('#select_activity').val();
+				});
+				var start_date = new Date (activity.start);
+				var end_date = new Date (activity.end);
+				var start_date_text = start_date.getDate()+'.'+(start_date.getMonth()+1)+'.'+start_date.getFullYear();
+				var start_time_minutes = start_date.getMinutes()<10?'0'+start_date.getMinutes():start_date.getMinutes(); 
+				var start_time_text = start_date.getHours()+':'+start_time_minutes;
+				var end_time_minutes = end_date.getMinutes()<10?'0'+end_date.getMinutes():end_date.getMinutes();
+				var end_time_text = end_date.getHours()+':'+end_time_minutes;
+				$$('#activity_date').html('Дата '+start_date_text+' '+start_time_text+' - '+ end_time_text);
+
 			},
 		}
 	  },
