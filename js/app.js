@@ -31,6 +31,13 @@ var app = new Framework7({
 		on: {
 			pageInit: function (e, page) {
 				getHistory();
+				var $ptrContent = $$('.ptr-content');
+				$ptrContent.on('ptr:refresh', function (e) {
+					$$('#history_block').html('');
+					history_loaded = false;
+					getHistory();	
+					app.ptr.done();
+				});
 			},
 		}
 	  },
@@ -39,12 +46,30 @@ var app = new Framework7({
 		url: 'pages/add_event.html',
 		on: {
 			pageInit: function (e, page) {
-				var calendarModal = app.calendar.create({
-					inputEl: '#time_start',
-					openIn: 'customModal',
-					header: true,
-					footer: true,
-					});
+				var distributors=[];
+				var flags={};
+				for (a in activities_data){
+					if (!flags[activities_data[a].orgunit.id]){
+						flags[activities_data[a].orgunit.id] = true;
+						distributors.push(activities_data[a].orgunit);
+					}
+				}
+				for (a in distributors){
+					$$('#select_distributor').append('<option value="'+distributors[a].id+'" selected>'+distributors[a].title+'</option>');
+				}
+				/* ----- */
+				var locations=[];
+				var flags={};
+				for (a in activities_data){
+					if (!flags[activities_data[a].location.id]){
+						flags[activities_data[a].location.id] = true;
+						locations.push(activities_data[a].location);
+					}
+				}
+				for (a in locations){
+					$$('#select_address').append('<option value="'+locations[a].id+'" selected>'+locations[a].address+'</option>');
+				}
+				console.log(distributors);
 			},
 		}
 	  },
@@ -53,8 +78,29 @@ var app = new Framework7({
 		url: 'pages/add_person.html',
 		},
 		{
-			path: '/history_details',
+			path: '/history_details/:id',
 			url: 'pages/history_details.html',
+			on: {
+				pageInit: function (e, page) {
+					var id=page.route.params.id;
+					var history_detail = history_data.find(function (val){
+						return val.id == id;
+					});
+					var start_date = new Date (history_detail.start);
+					var end_date = new Date (history_detail.end);
+					var start_date_text = start_date.getDate()+'.'+(start_date.getMonth()+1)+'.'+start_date.getFullYear();
+					var start_time_text = start_date.getHours()+':'+start_date.getMinutes();
+					var end_time_text = end_date.getHours()+':'+end_date.getMinutes();
+					$$('#activity_detail').html(history_detail.orgunit.title+'<br>'+history_detail.location.address+
+					'<br>'+start_date_text+' '+start_time_text+' - '+end_time_text+'<br>'+history_detail.title);
+					$$('#activity_count_customers').html(history_detail.customers.length+' участников');
+					var customers_card='';
+					for (i in history_detail.customers){
+						customers_card=customers_card+history_detail.customers[i].cardCode+'<br>';
+					}
+					$$('#activity_customers_card').html(customers_card);
+				},
+			}
 		},
 	],
 	// ... other parameters
@@ -94,6 +140,7 @@ $$(document).on('click', '#login', function(){
 		});
 var history_loaded = false;
 var history_data = [];
+var activities_data = [];
 function getHistory(){
 	if (history_loaded == true) {
 		build_history();
@@ -112,14 +159,24 @@ function getHistory(){
 			history_data=data;
 			build_history();
 		}
-
+	});
+	app.request({
+		url: 'https://smd.mos.ru/api/mobile/activities',
+		dataType: "json",
+		headers: { 
+			'Authorization': 'Bearer '+localStorage.getItem('user_token')
+		},
+		success: function(data){
+			console.log(data);
+			activities_data=data;
+		}
 	});
 }
 
 function build_history (){
 	for(i in history_data){
 		$$('#history_block').append('<li>\
-			<a href="/history_details?id='+history_data[i].id+'" class="item-link item-content">\
+			<a href="/history_details/'+history_data[i].id+'" class="item-link item-content">\
 			<div class="item-media"><i class="f7-icons">checkmark_seal_fill</i></div>\
 			<div class="item-inner">\
 			<div class="item-title">'+history_data[i].title+'</div>\
@@ -129,3 +186,5 @@ function build_history (){
 	}
 	/* console.log(history_data); */
 }
+
+
