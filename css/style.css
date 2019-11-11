@@ -1,0 +1,23 @@
+.small-smart-select .list .item-title {
+	font-size: 12px;
+	white-space: normal;
+}
+
+.small-add-event .smart-select .item-after {
+	max-width: none;
+}
+
+.small-add-event.list .item-after {
+	white-space: normal;
+}
+
+.small-add-event.list .item-inner {
+	display: block;
+}
+
+.activity_date_edit {
+	text-align: center;
+}
+
+
+

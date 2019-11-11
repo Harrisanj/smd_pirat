@@ -17,10 +17,10 @@
 <!-- Начало контента страницы -->
 <div class="page-content">
 	<div class="block">
-			<div class="list inline-labels no-hairlines-md">
+			<div class="list small-add-event no-hairlines-md">
 <ul>
 	<li>
-		<a class="item-link smart-select smart-select-init" data-open-in="sheet">
+		<a class="item-link smart-select smart-select-init" data-close-on-select="true" data-open-in="sheet">
 			<select id="select_distributor" name="distributor">
 			
 			</select>
@@ -32,7 +32,7 @@
 			</a>
  </li>
  <li>
-		<a class="item-link smart-select smart-select-init" data-open-in="sheet">
+		<a class="item-link smart-select smart-select-init" data-close-on-select="true" data-open-in="sheet" data-css-class = "small-smart-select">
 			<select id='select_address' name="address">
 			</select>
 			<div class="item-content">
@@ -43,7 +43,7 @@
 			</a>
  </li>
  <li>
-		<a id='smart' class="item-link smart-select smart-select-init" data-open-in="sheet">
+		<a id='smart_select_activity' class="item-link smart-select smart-select-init" data-close-on-select="true" data-open-in="sheet">
 			<select id='select_activity' name="activity">
 			</select>
 			<div class="item-content">
@@ -56,13 +56,13 @@
 
 		</ul> 
 		<br>
-<div id="activity_date">
+<div id="activity_date" class="activity_date_edit">
 </div>
 
 	</div>			 
-	<br><a href="/add_person" class="button button-raised button-round button-fill button-large">Далее</a> <br>
+	<br><a id="add_person_button" class="button button-raised button-round button-fill button-large">Далее</a> <br>
 
-
+<input type="hidden" id="end_date">
 
 
 

@@ -36,7 +36,6 @@ var app = new Framework7({
 					$$('#history_block').html('');
 					history_loaded = false;
 					getHistory();	
-					app.ptr.done();
 				});
 			},
 		}
@@ -85,8 +84,12 @@ var app = new Framework7({
 					for (a in activities){
 						$$('#select_activity').append('<option value="'+activities[a].id+'" selected>'+activities[a].title+'</option>');
 					}
-					var smart_select=app.smartSelect.get('#smart_select_activity');
-						
+				/* 	var smart_select = app.smartSelect.get('#smart_select_activity'); */
+				app.smartSelect.destroy('#smart_select_activity');
+						app.smartSelect.create({el:$$('#smart_select_activity'),
+							openIn:'sheet',
+							closeOnSelect:true,
+					});
 				});
 				$$('#select_activity').change(function (){
 					var activity = activities_data.find(function(val){
@@ -100,6 +103,7 @@ var app = new Framework7({
 					var end_time_minutes = end_date.getMinutes()<10?'0'+end_date.getMinutes():end_date.getMinutes();
 					var end_time_text = end_date.getHours()+':'+end_time_minutes;
 					$$('#activity_date').html('Дата '+start_date_text+' '+start_time_text+' - '+ end_time_text);
+					$$('#end_date').val(activity.end);
 /* ------- */
 					console.log(activity, activities_data);
 				});
@@ -116,13 +120,20 @@ var app = new Framework7({
 				var end_time_minutes = end_date.getMinutes()<10?'0'+end_date.getMinutes():end_date.getMinutes();
 				var end_time_text = end_date.getHours()+':'+end_time_minutes;
 				$$('#activity_date').html('Дата '+start_date_text+' '+start_time_text+' - '+ end_time_text);
+				$$('#end_date').val(activity.end);
 
 			},
 		}
 	  },
 	  {
-		path: '/add_person',
+		path: '/add_person/:activity_id',
 		url: 'pages/add_person.html',
+		on: {
+			pageInit: function (e, page){
+				var activity_id = page.route.params.activity_id;
+				console.log(activity_id);
+			}
+		}
 		},
 		{
 			path: '/history_details/:id',
@@ -221,6 +232,8 @@ function getHistory(){
 }
 
 function build_history (){
+	$$('#preloader').hide();
+	app.ptr.done();
 	for(i in history_data){
 		$$('#history_block').append('<li>\
 			<a href="/history_details/'+history_data[i].id+'" class="item-link item-content">\
@@ -234,4 +247,28 @@ function build_history (){
 	/* console.log(history_data); */
 }
 
+$$(document).on('click', '#add_person_button', function(){
+	var cur_date = new Date();
+	console.log(cur_date);
+	var cur_hour = cur_date.getHours();
+	console.log(cur_hour);
+	var activity_end_date = new Date ($$('#end_date').val());
+	console.log(activity_end_date);
+	var activity_end_hour = activity_end_date.getHours();
+	console.log(activity_end_hour);
+	if (cur_hour<=activity_end_hour) {
+		app.views.main.router.navigate('/add_person/'+$$('#select_activity').val(), {reloadCurrent: true});
+	}
+	else {
+		var notificationFull = app.notification.create({
+			icon: '<i class="f7-icons">xmark_shield_fill</i>',
+			title: 'Внимание',
+			/* titleRightText: 'now', */
+		/* 	subtitle: 'This is a subtitle', */
+			text: 'Регистрация на мероприятие окончена',
+			closeTimeout: 5000,
+		});
+		notificationFull.open();
+	}
+});
 
