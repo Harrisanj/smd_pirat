@@ -1,5 +1,5 @@
 .small-smart-select .list .item-title {
-	font-size: 12px;
+	/* font-size: 12px; */
 	white-space: normal;
 }
 
@@ -21,3 +21,8 @@
 
 
 
+.preload-block {
+	position: relative;
+	top: 50%;
+	transform: translate(0%, -50%);
+}
