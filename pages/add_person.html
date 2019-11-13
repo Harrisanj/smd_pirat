@@ -6,19 +6,44 @@
 <div class="navbar-bg"></div>
 	<div class="navbar-inner">
 <div class="left">
-	<a href="/add_event" class="link icon-only">					
-<i class="f7-icons md-only">arrow_left</i>
+	<a href="/main_menu" class="link icon-only">					
+<i class="f7-icons">arrow_left</i>
 </a>
 </div>
 <div class="title">Досуг пенсионеров</div>
 
 </div>
 </div>
+
+<div class="fab fab-right-bottom fab-morph" data-morph-to="#add_person_action">
+	<a href="#" class="">
+	<i class="f7-icons ">person_badge_plus</i>
+	</a>
+	</div>
+
+	<div class="list links-list fab-morph-target" id="add_person_action">
+		<ul>
+		<li><a href="#" class="fab-close" id="add_person_bar_code_link">Сканировать карту</a></li>
+		<li><a href="#" class="fab-close">Приложить карту</a></li>
+		<li><a href="#" class="fab-close">Добавить вручную</a></li>
+		</ul>
+		</div>
+
+
 <!-- Начало контента страницы -->
-<div class="page-content">
+<div class="page-content fab-close">
 	<div class="block">
-			
-	<br><a href="/add_person" class="button button-raised button-round button-fill button-large">Далее</a> <br>
+		<div class="card">
+			<div class="card-header">Мероприятие</div>
+			<div id="add_person_activity" class="card-content card-content-padding"></div>
+		</div>			 
+		<div class="card">
+			<div class="card-header">Участники</div>
+			<div id="add_visitors_activity" class="card-content card-content-padding">Вы еще не добавили участников <br>Для добавления участников нажмите кнопку в нижней правой части экрана</div>
+		</div>		
+
+
+	<br><a  class="button button-raised button-round button-fill button-large button-disabled">Отправить</a> <br>
 
 
 

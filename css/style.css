@@ -26,3 +26,25 @@
 	top: 50%;
 	transform: translate(0%, -50%);
 }
+
+#add_person_action {
+    position: absolute;
+	right: 16px;
+    bottom: 40px;
+    background: #fff;
+    box-shadow: 0 3px 30px rgba(0,0,0,.4);
+    border-radius: 5px;
+    z-index: 1600;
+    margin: 0!important;
+}
+
+.button-disabled {
+	opacity: 0.5;
+}
+
+.camera_bar_code {
+	display: inline-block;
+	height: 200px;
+	width: 200px;
+	border: 1px solid coral;
+}

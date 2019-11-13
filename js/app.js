@@ -97,13 +97,15 @@ var app = new Framework7({
 					for (a in activities){
 						$$('#select_activity').append('<option value="'+activities[a].id+'" selected>'+activities[a].title+'</option>');
 					}
-				/* 	var smart_select = app.smartSelect.get('#smart_select_activity'); */
-				app.smartSelect.destroy('#smart_select_activity');
-						app.smartSelect.create({el:$$('#smart_select_activity'),
-							/* openIn:'sheet', */
-							closeOnSelect:true,
+					/* 	var smart_select = app.smartSelect.get('#smart_select_activity'); */
+					app.smartSelect.destroy('#smart_select_activity');
+					app.smartSelect.create({el:$$('#smart_select_activity'),
+						/* openIn:'sheet', */
+						closeOnSelect:true,
 					});
+					$$('#select_activity').change();
 				});
+				
 				$$('#select_activity').change(function (){
 					var activity = activities_data.find(function(val){
 						return val.id==$$('#select_activity').val();
@@ -260,8 +262,31 @@ var app = new Framework7({
 			pageInit: function (e, page){
 				var activity_id = page.route.params.activity_id;
 				console.log(activity_id);
+				var activity=activities_data.find(function (val){
+					return val.id==activity_id;
+				});
+				console.log(activity);
+				var start_date = new Date (activity.start);
+				var end_date = new Date (activity.end);
+				var start_date_text = start_date.getDate()+'.'+(start_date.getMonth()+1)+'.'+start_date.getFullYear();
+				var start_time_text = start_date.getHours()+':'+(start_date.getMinutes()<10?'0'+start_date.getMinutes():start_date.getMinutes());
+				var end_time_text = end_date.getHours()+':'+(end_date.getMinutes()<10?'0'+end_date.getMinutes():end_date.getMinutes());
+				
+				$$('#add_person_activity').html(activity.orgunit.title+'<br>'+activity.location.address+
+				'<br>'+start_date_text+' '+start_time_text+' - '+end_time_text+'<br>'+activity.title);
+				$$("#add_person_bar_code_link").attr("href", "/add_person_bar_code/"+activity_id);
 			}
 		}
+		},
+		{
+			path: '/add_person_bar_code/:activity_id',
+			url: 'pages/add_person_bar_code.html',
+			on: {
+				pageInit: function (e, page){
+					var activity_id = page.route.params.activity_id;
+					$$("#bar_code_back").attr("href", "/add_person/"+activity_id);	
+				}
+			},
 		},
 		{
 			path: '/history_details/:id',
@@ -403,6 +428,7 @@ $$(document).on('click', '#add_person_button', function(){
 	console.log(activity_end_date);
 	var activity_end_hour = activity_end_date.getHours();
 	console.log(activity_end_hour);
+	app.views.main.router.navigate('/add_person/'+$$('#select_activity').val(), {reloadCurrent: true});
 	if (cur_hour<=activity_end_hour) {
 		app.views.main.router.navigate('/add_person/'+$$('#select_activity').val(), {reloadCurrent: true});
 	}
