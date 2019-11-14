@@ -274,7 +274,7 @@ var app = new Framework7({
 				
 				$$('#add_person_activity').html(activity.orgunit.title+'<br>'+activity.location.address+
 				'<br>'+start_date_text+' '+start_time_text+' - '+end_time_text+'<br>'+activity.title);
-				$$("#add_person_bar_code_link").attr("href", "/add_person_bar_code/"+activity_id);
+				/* $$("#add_person_bar_code_link").attr("href", "/add_person_bar_code/"+activity_id); */
 			}
 		}
 		},
@@ -285,31 +285,7 @@ var app = new Framework7({
 				pageInit: function (e, page){
 					var activity_id = page.route.params.activity_id;
 					$$("#bar_code_back").attr("href", "/add_person/"+activity_id);
-					
-					cordova.plugins.barcodeScanner.scan(
-						function (result) {
-							$$("#test_logs").text("We got a barcode\n" +
-								  "Result: " + result.text + "\n" +
-								  "Format: " + result.format + "\n" +
-								  "Cancelled: " + result.cancelled);
-						},
-						function (error) {
-							alert("Scanning failed: " + error);
-						},
-						{
-							preferFrontCamera : false, // iOS and Android
-							showFlipCameraButton : false, // iOS and Android
-							showTorchButton : false, // iOS and Android
-							torchOn: false, // Android, launch with the torch switched on (if available)
-							saveHistory: true, // Android, save scan history (default false)
-							prompt : "Наведите камеру на карту для считывания", // Android
-							resultDisplayDuration: 300, // Android, display scanned text for X ms. 0 suppresses it entirely, default 1500
-							formats : "CODE_128", // default: all but PDF_417 and RSS_EXPANDED
-							orientation : "portrait", // Android only (portrait|landscape), default unset so it rotates with the device
-							disableAnimations : true, // iOS
-							disableSuccessBeep: false // iOS and Android
-						}
-					 );
+				
 				}
 			},
 		},
@@ -470,4 +446,33 @@ $$(document).on('click', '#add_person_button', function(){
 	}
 });
 
+
+
+$$(document).on('click', '#add_person_bar_code_link', function(){
+
+	cordova.plugins.barcodeScanner.scan(
+		function (result) {
+			$$("#add_visitors_activity").text("We got a barcode\n" +
+				  "Result: " + result.text + "\n" +
+				  "Format: " + result.format + "\n" +
+				  "Cancelled: " + result.cancelled);
+		},
+		function (error) {
+			alert("Scanning failed: " + error);
+		},
+		{
+			preferFrontCamera : false, // iOS and Android
+			showFlipCameraButton : false, // iOS and Android
+			showTorchButton : false, // iOS and Android
+			torchOn: false, // Android, launch with the torch switched on (if available)
+			saveHistory: true, // Android, save scan history (default false)
+			prompt : "Наведите камеру на карту для считывания", // Android
+			resultDisplayDuration: 300, // Android, display scanned text for X ms. 0 suppresses it entirely, default 1500
+			formats : "CODE_128", // default: all but PDF_417 and RSS_EXPANDED
+			orientation : "portrait", // Android only (portrait|landscape), default unset so it rotates with the device
+			disableAnimations : true, // iOS
+			disableSuccessBeep: false // iOS and Android
+		}
+	 );
+});
 
