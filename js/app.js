@@ -57,6 +57,10 @@ var app = new Framework7({
 		
 		  on: {
 			pageInit: function (e, page) {
+				console.log(page.route.hash);
+				if(page.route.hash){
+					$$('a[href="#'+page.route.hash+'"]').click();
+				}
 				/* Логика регистрация */
 				var distributors=[];
 				var flags={};
@@ -262,6 +266,7 @@ var app = new Framework7({
 			pageInit: function (e, page){
 				var activity_id = page.route.params.activity_id;
 				console.log(activity_id);
+				console.log('привет андрей');
 				var activity=activities_data.find(function (val){
 					return val.id==activity_id;
 				});
@@ -275,6 +280,7 @@ var app = new Framework7({
 				$$('#add_person_activity').html(activity.orgunit.title+'<br>'+activity.location.address+
 				'<br>'+start_date_text+' '+start_time_text+' - '+end_time_text+'<br>'+activity.title);
 				/* $$("#add_person_bar_code_link").attr("href", "/add_person_bar_code/"+activity_id); */
+				console.log($$('#add_person_activity'));
 			}
 		}
 		},
@@ -429,9 +435,9 @@ $$(document).on('click', '#add_person_button', function(){
 	console.log(activity_end_date);
 	var activity_end_hour = activity_end_date.getHours();
 	console.log(activity_end_hour);
-	app.views.main.router.navigate('/add_person/'+$$('#select_activity').val(), {reloadCurrent: true});
+	app.views.main.router.navigate('/add_person/'+$$('#select_activity').val());
 	if (cur_hour<=activity_end_hour) {
-		app.views.main.router.navigate('/add_person/'+$$('#select_activity').val(), {reloadCurrent: true});
+		app.views.main.router.navigate('/add_person/'+$$('#select_activity').val());
 	}
 	else {
 		var notificationFull = app.notification.create({
@@ -450,7 +456,6 @@ $$(document).on('click', '#add_person_button', function(){
 
 $$(document).on('click', '#add_person_bar_code_link', function(){
 	
-
 	cordova.plugins.barcodeScanner.scan(
 		function (result) {
 			$$("#add_visitors_wrapper").hide();
@@ -481,7 +486,16 @@ $$(document).on('click', '#add_person_bar_code_link', function(){
 
 $$(document).on('click', '#button_submit_visitors:not(.button-disabled)', function(){
 	app.dialog.confirm('Вы действительно хотите завершить создание мероприятия и отправить данные на сервер?', 'Отправка данных' , function () {
-		app.dialog.alert('Занятие успешно создано!', 'Результат отправки');
+		app.dialog.preloader('Идет отправка данных');
+		setTimeout(() => {
+			app.dialog.close();
+			app.dialog.alert('Занятие успешно создано!', 'Результат отправки', function(){
+				history_loaded = false;
+				getHistory();
+				app.views.main.router.navigate('/main_menu#tab-history');
+			});
+		}, 3000);
+		
 	});
 });
 
