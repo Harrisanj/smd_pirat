@@ -455,7 +455,7 @@ $$(document).on('click', '#add_person_bar_code_link', function(){
 		function (result) {
 			$$("#add_visitors_wrapper").hide();
 			$$("#ul_visitor_list").append('<li>	\
-			'+result.text+' <i class="f7-icons ">multiply</i>\
+			'+result.text+' <i class="f7-icons remove_visitor">multiply</i>\
 			</li>');
 			$$("#button_submit_visitors").removeClass('button-disabled');
 		},
