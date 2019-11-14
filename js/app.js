@@ -449,13 +449,15 @@ $$(document).on('click', '#add_person_button', function(){
 
 
 $$(document).on('click', '#add_person_bar_code_link', function(){
+	
 
 	cordova.plugins.barcodeScanner.scan(
 		function (result) {
-			$$("#add_visitors_activity").text("We got a barcode\n" +
-				  "Result: " + result.text + "\n" +
-				  "Format: " + result.format + "\n" +
-				  "Cancelled: " + result.cancelled);
+			$$("#add_visitors_wrapper").hide();
+			$$("#ul_visitor_list").append('<li>	\
+			'+result.text+' <i class="f7-icons ">multiply</i>\
+			</li>');
+			$$("#button_submit_visitors").removeClass('button-disabled');
 		},
 		function (error) {
 			alert("Scanning failed: " + error);
@@ -476,3 +478,18 @@ $$(document).on('click', '#add_person_bar_code_link', function(){
 	 );
 });
 
+
+$$(document).on('click', '#button_submit_visitors:not(.button-disabled)', function(){
+	app.dialog.confirm('Вы действительно хотите завершить создание мероприятия и отправить данные на сервер?', 'Отправка данных' , function () {
+		app.dialog.alert('Занятие успешно создано!', 'Результат отправки');
+	});
+});
+
+$$(document).on('click', '.remove_visitor', function(){
+	$$(this).closest('li').remove();
+	if($$('.remove_visitor').length == 0){
+		$$("#add_visitors_wrapper").show();
+		$$("#button_submit_visitors").addClass('button-disabled');
+	}
+	
+});

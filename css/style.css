@@ -48,3 +48,16 @@
 	width: 200px;
 	border: 1px solid coral;
 }
+
+.ul_visitor_list{
+	margin: 0;
+	padding: 0;
+}
+
+.ul_visitor_list li {
+	list-style: none;
+	display: flex;
+	align-items: center;
+	margin: 5px 0px;
+    border-bottom: 1px solid #5f8fbf;
+}
