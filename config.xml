@@ -36,5 +36,5 @@
     <preference name="phonegap-version" value="cli-9.0.0" />
     <allow-intent href="http:///" />
     <allow-intent href="https:///*" />
-
+<preference name="orientation" value="portrait" />
 </widget>
