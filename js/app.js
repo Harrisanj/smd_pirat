@@ -281,6 +281,7 @@ var app = new Framework7({
 				'<br>'+start_date_text+' '+start_time_text+' - '+end_time_text+'<br>'+activity.title);
 				/* $$("#add_person_bar_code_link").attr("href", "/add_person_bar_code/"+activity_id); */
 				console.log($$('#add_person_activity'));
+				$$("#button_submit_visitors").attr("data-activity-id", activity_id);
 			}
 		}
 		},
@@ -485,17 +486,40 @@ $$(document).on('click', '#add_person_bar_code_link', function(){
 
 
 $$(document).on('click', '#button_submit_visitors:not(.button-disabled)', function(){
+	var activityId = $$(this).attr('data-activity-id');
 	app.dialog.confirm('Вы действительно хотите завершить создание мероприятия и отправить данные на сервер?', 'Отправка данных' , function () {
-		app.dialog.preloader('Идет отправка данных');
-		setTimeout(() => {
-			app.dialog.close();
-			app.dialog.alert('Занятие успешно создано!', 'Результат отправки', function(){
-				history_loaded = false;
-				getHistory();
-				app.views.main.router.navigate('/main_menu#tab-history');
-			});
-		}, 3000);
+		var send_data = {};
+		/* {"customers":[{"cardCode":"9643907722015502058 20040177","customerActivityAttributes":[]}],"activityId":810313} */
+		send_data.activityId = activityId;
 		
+		var customers = [];
+		$$('#ul_visitor_list li').each(function(){
+			customers.push({cardCode:$$(this).find('.card_code').text(), customerActivityAttributes: []});
+		});
+		send_data.customers = customers;
+		send_data=JSON.stringify(send_data);
+		console.log(send_data);
+		app.dialog.preloader('Идет отправка данных');
+
+		app.request({
+			/* url: 'https://smd.mos.ru/api/mobile/activities/upload', */
+			url: 'https://ya.ru/',
+			dataType: "json",
+			headers: { 
+				'Authorization': 'Bearer '+localStorage.getItem('user_token'),
+				"Content-Type":"application/json;charset=utf-8"
+			},
+			method:'PUT', 
+			data: send_data,
+			success: function(data){
+				app.dialog.close();
+				app.dialog.alert(data.message, data.title, function(){
+					history_loaded = false;
+					getHistory();
+					app.views.main.router.navigate('/main_menu#tab-history');
+				});
+			}
+		});
 	});
 });
 
@@ -506,4 +530,12 @@ $$(document).on('click', '.remove_visitor', function(){
 		$$("#button_submit_visitors").addClass('button-disabled');
 	}
 	
+});
+
+$$(document).on('click', '#add_person_manual', function(){
+	$$("#add_visitors_wrapper").hide();
+			$$("#ul_visitor_list").append('<li>	\
+			<div class="card_code">'+(Math.random()*100000000000000000)+' '+(Math.floor (Math.random()*1000000))+'</div> <i class="f7-icons remove_visitor">multiply</i>\
+			</li>');
+			$$("#button_submit_visitors").removeClass('button-disabled');
 });
