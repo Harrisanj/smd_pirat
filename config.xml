@@ -9,26 +9,6 @@
 <icon src="icon-60@3x.png" width="180" height="180" />
   <name>Досуг пенсионеров</name>
 <!--  добавил на всякий-->
-<allow-intent href="http://*/*" />
-    <allow-intent href="https://*/*" />
-<access origin="*"/>
-
-
-    <plugin name="cordova-plugin-whitelist" version="1" />
-    <plugin name="phonegap-plugin-barcodescanner" version="8.0"/>
-    <allow-intent href="http:///" />
-    <allow-intent href="https:///*" />
-
-
-
-
-
-
-
-
-
-
-
 <!--  -->
   <description>
      Хорошее приложение
@@ -37,5 +17,14 @@
   <author href="https://build.phonegap.com" email="support@phonegap.com">
       Harrisan
   </author>
+
+<allow-intent href="http://*/*" />
+    <allow-intent href="https://*/*" />
+<access origin="*"/>
+    <plugin name="cordova-plugin-whitelist" version="1" />
+    <plugin name="phonegap-plugin-barcodescanner"/>
+    <preference name="android-build-tool" value="gradle" />
+    <allow-intent href="http:///" />
+    <allow-intent href="https:///*" />
 
 </widget>
